@@ -9,9 +9,14 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-      - name: Verify Structure
-        run: ls -R tourism_project/
+
+      - name: Verify Root Files
+        run: |
+          test -f Dockerfile && echo "Dockerfile found"
+          test -f app.py && echo "App script found"
+          test -f requirements.txt && echo "Requirements found"
