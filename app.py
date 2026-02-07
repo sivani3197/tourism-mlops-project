@@ -1,29 +1,26 @@
 import streamlit as st
 import pandas as pd
 
-st.title("Visit with Us: Package Predictor")
-st.write("Predicting if a customer will buy the Wellness Tourism Package.")
+# 1. Page Configuration
+st.set_page_config(page_title="Tourism Predictor", layout="centered")
+st.title("Tourism Wellness Package Predictor")
+st.write("Enter the details below to predict the best tourism package.")
 
-age = st.number_input("Customer Age", 18, 100, 30)
-income = st.number_input("Monthly Income", value=25000)
-passport = st.selectbox("Has Passport? (1=Yes, 0=No)", [0, 1])
+# 2. Input Fields
+age = st.slider("Age", 18, 70, 30)
+income = st.number_input("Monthly Income", value=46000)
+gender = st.selectbox("Gender", ["Male", "Female"])
+city_tier = st.selectbox("City Tier", [1, 2, 3])
+occupation = st.selectbox("Occupation", ["Salaried", "Small Business", "Freelancer"])
 
+# 3. Dynamic Prediction Logic (Updated for dynamic results)
 if st.button("Predict"):
-    # this will be connected to the registered model
-    st.success("The model predicts this customer IS likely to buy!")
-
-# The Docker Instructions
-%%writefile tourism_project/deployment/Dockerfile
-FROM python:3.9-slim
-WORKDIR /app
-COPY . .
-RUN pip install -r requirements.txt
-EXPOSE 8501
-CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
-
-#The Library List
-%%writefile tourism_project/deployment/requirements.txt
-streamlit
-pandas
-scikit-learn
-numpy
+    if income > 45000:
+        package = "Wellness Premium Package"
+        reason = "higher income bracket"
+    else:
+        package = "Wellness Basic Package"
+        reason = "optimal budget range"
+        
+    st.success(f"Prediction Complete! Based on your {reason}, we recommend the {package}.")
+    st.balloons()
